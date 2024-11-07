@@ -1,3 +1,4 @@
+#pip tensorflow streamlit install librosa matplotlib opencv-python sound file requests
 import tensorflow as tf
 import numpy as np
 import streamlit as st
@@ -6,6 +7,7 @@ import librosa.display
 import matplotlib.pyplot as plt
 import soundfile as sf
 import io
+import time
 
 def process_audio(uploaded_file):
     audio, sr = librosa.load(uploaded_file, sr=None)
@@ -17,10 +19,10 @@ def plot_melspectrogram(audio, sr):
     mel_spec_db = librosa.amplitude_to_db(mel_spec, ref=np.max)
 
     # Plot the Mel spectrogram
-    librosa.display.specshow(mel_spec_db, sr=sr, x_axis=None, y_axis=None)
+    librosa.display.specshow(mel_spec_db, sr=sr, x_axis="time", y_axis="mel")
     #librosa.display.specshow(mel_spec_db, sr=sr, x_axis='time', y_axis='mel')
-    #plt.colorbar(format='%+2.0f dB')
-    st.pyplot(plt, bbox_inches='tight', pad_inches=0)
+    plt.colorbar(format='%+2.0f dB')
+    st.pyplot(plt, bbox_inches='tight', pad_inches=0.1)
 
 # Function to preprocess audio and predict
 def predict_audio(model, audio, sr):
@@ -47,18 +49,22 @@ def app():
     st.title("Cough Covid-19 Screener")
 
     # Load the model once at the start
-    model = tf.keras.models.load_model('best_model.keras')
+    model = tf.keras.models.load_model('200_model.keras')
     
     # Add a file uploader for the audio file
     uploaded_file = st.file_uploader("Upload a Cough audio file", type=["wav", "mp3"])
 
 
     if uploaded_file is not None:
+        
         st.audio(uploaded_file)
         # Process the uploaded audio file
         audio, sr = process_audio(uploaded_file)
 
-        predicted_label = predict_audio(model, audio, sr)
+        with st.spinner("Analyzing audio..."):
+            predicted_label = predict_audio(model, audio, sr)
+            time.sleep(1)
+
         if predicted_label == "covid":
             st.title("Prediction: :red[COVID-19]")
         else:
