@@ -47,7 +47,7 @@ def app():
     st.title("Cough Covid-19 Screener")
 
     # Load the model once at the start
-    model = tf.keras.models.load_model('model.keras')
+    model = tf.keras.models.load_model('best_model.keras')
     
     # Add a file uploader for the audio file
     uploaded_file = st.file_uploader("Upload a Cough audio file", type=["wav", "mp3"])
