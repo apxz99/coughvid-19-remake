@@ -9,7 +9,7 @@ import io
 import time
 
 def load_model():
-    return tf.keras.models.load_model('200_model.keras')
+    return tf.keras.models.load_model('nice_model.keras')
 
 def process_audio(audio_bytes):
     audio, sr = librosa.load(io.BytesIO(audio_bytes), sr=None)
