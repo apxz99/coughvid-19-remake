@@ -5,3 +5,4 @@ matplotlib
 soundfile
 requests
 opencv-python
+opencv-python-headless
