@@ -4,4 +4,4 @@ librosa
 matplotlib
 soundfile
 requests
-cv2
+opencv-python
