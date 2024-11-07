@@ -6,7 +6,6 @@ import librosa.display
 import matplotlib.pyplot as plt
 import soundfile as sf
 import io
-from st_audiorec import st_audiorec
 
 def process_audio(uploaded_file):
     audio, sr = librosa.load(uploaded_file, sr=None)
