@@ -9,7 +9,6 @@ import soundfile as sf
 import io
 import time
 import streamlit as st
-from streamlit_mic_recorder import mic_recorder
 
 def load_model():
     return tf.keras.models.load_model('200_model.keras')
