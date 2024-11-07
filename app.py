@@ -8,6 +8,11 @@ import matplotlib.pyplot as plt
 import soundfile as sf
 import io
 import time
+import streamlit as st
+from streamlit_mic_recorder import mic_recorder
+
+def load_model():
+    return tf.keras.models.load_model('200_model.keras')
 
 def process_audio(uploaded_file):
     audio, sr = librosa.load(uploaded_file, sr=None)
@@ -45,15 +50,11 @@ def predict_audio(model, audio, sr):
     return predicted_label
 
 def app():
-
+    model = load_model()
     st.title("Cough Covid-19 Screener")
 
-    # Load the model once at the start
-    model = tf.keras.models.load_model('200_model.keras')
-    
     # Add a file uploader for the audio file
     uploaded_file = st.file_uploader("Upload a Cough audio file", type=["wav", "mp3"])
-
 
     if uploaded_file is not None:
         
@@ -64,11 +65,12 @@ def app():
         with st.spinner("Analyzing audio..."):
             predicted_label = predict_audio(model, audio, sr)
             time.sleep(1)
+
             if predicted_label == "covid":
                 st.title("Prediction: :red[COVID-19]")
             else:
                 st.title("Prediction: :green[HEALTHY]")
-        
+            
         # Display the Mel spectrogram
         st.subheader("Mel Spectrogram")
         plot_melspectrogram(audio, sr)
