@@ -64,11 +64,10 @@ def app():
         with st.spinner("Analyzing audio..."):
             predicted_label = predict_audio(model, audio, sr)
             time.sleep(1)
-
-        if predicted_label == "covid":
-            st.title("Prediction: :red[COVID-19]")
-        else:
-            st.title("Prediction: :green[HEALTHY]")
+            if predicted_label == "covid":
+                st.title("Prediction: :red[COVID-19]")
+            else:
+                st.title("Prediction: :green[HEALTHY]")
         
         # Display the Mel spectrogram
         st.subheader("Mel Spectrogram")
