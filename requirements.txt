@@ -5,3 +5,4 @@ matplotlib
 opencv-python
 soundfile
 requests
+st_audiorec
