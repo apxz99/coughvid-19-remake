@@ -2,6 +2,5 @@ tensorflow
 streamlit
 librosa
 matplotlib
-opencv-python
 soundfile
 requests
