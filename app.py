@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import cv2
 import io
 import time
-
+#python.exe -m streamlit run app.py
 def load_model():
     return tf.keras.models.load_model('best_model3.keras')
 
@@ -15,22 +15,22 @@ def process_audio(audio_bytes):
     audio, sr = librosa.load(io.BytesIO(audio_bytes), sr=None)
     return audio, sr
 
-# Function to plot the Mel spectrogram
+# plot Mel spectrogram
 def predict_audio(model, audio, sr):
-    # แปลงเสียงเป็น melspectrogram
+    #melspectrogram
     mels_db = librosa.power_to_db(librosa.feature.melspectrogram(y=audio, sr=sr), ref=1.0)
     
-    # ปรับรูปแบบให้ตรงกับ input ของโมเดล
-    mels_db = cv2.resize(mels_db, (128, 32))  # ปรับขนาดตามที่โมเดลคาดหวัง
-    mels_db = np.expand_dims(mels_db, axis=-1)  # เพิ่มมิติ channel
-    mels_db = np.expand_dims(mels_db, axis=0)   # เพิ่มมิติ batch
+    #input setting
+    mels_db = cv2.resize(mels_db, (128, 32)) 
+    mels_db = np.expand_dims(mels_db, axis=-1) 
+    mels_db = np.expand_dims(mels_db, axis=0)  
     
-    # ทำนายผลลัพธ์
+    #predict
     predictions = model.predict(mels_db)
     predicted_class = np.argmax(predictions, axis=1)
     
-    # แปลงผลลัพธ์เป็น label
-    status_labels = ["healthy", "covid"]  # ปรับชื่อคลาสตามโมเดลที่ฝึก
+    #label
+    status_labels = ["healthy", "covid"] 
     predicted_label = status_labels[predicted_class[0]]
     
     return predicted_label
@@ -46,7 +46,7 @@ def app():
         """
         )
 
-    # Option to upload file or record audio
+    #Option
     option = st.radio("1 . Choose a method to upload the audio file :", ("Upload a file", "Record audio"))
 
     if option == "Upload a file":
@@ -66,9 +66,8 @@ def app():
 
 
     elif option == "Record audio":
-        # Record audio
-        rec = st.audio_input("2 . Record a cough")
-
+        rec = st.audio_input("2 . Record a cough (กดครั้งแรกเพื่อเริ่มการบันทึก กดอีกครั้งเพื่อหยุด / Press first to start recording. Press again to stop.)")
+    
         if rec is not None:
             audio_data, sr = process_audio(rec.read())
             st.audio(rec)
@@ -80,6 +79,5 @@ def app():
                 else:
                     st.title(f"Prediction: :green[{predicted_label}]")
 
-# Run the Streamlit app
 if __name__ == "__main__":
     app()
