@@ -9,7 +9,13 @@ import io
 import time
 #python.exe -m streamlit run app.py
 def load_model():
-    return tf.keras.models.load_model('best_model3.keras', compile=False)
+    try:
+        model = tf.keras.models.load_model('best_model3.keras', compile=False)
+        st.success("Model loaded success.")  
+        return model
+    except Exception as e:
+        st.error(f"Error loading model: {e}")
+        return None
 
 def process_audio(audio_bytes):
     audio, sr = librosa.load(io.BytesIO(audio_bytes), sr=None)
