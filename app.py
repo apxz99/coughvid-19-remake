@@ -11,7 +11,7 @@ import time
 def load_model():
     try:
         model = tf.keras.models.load_model('best_model3.keras', compile=False)
-        st.success("Model loaded success.")  
+        st.toast('Model loaded success!', icon="✅")
         return model
     except Exception as e:
         st.error(f"Error loading model: {e}")
@@ -57,33 +57,35 @@ def app():
 
     if option == "Upload a file":
         uploaded_file = st.file_uploader("2 . Upload a Cough audio file", type=["wav", "mp3"])
-        
         if uploaded_file is not None:
             audio_data, sr = process_audio(uploaded_file.read())
-            st.audio(uploaded_file)
             with st.spinner("Analyzing audio..."):
                 time.sleep(1)
+                st.audio(uploaded_file)
+
                 predicted_label = predict_audio(model, audio_data, sr)
+            
                 if predicted_label == "covid":
                     st.title(f"Prediction: :red[{predicted_label}]")
                 else:
                     st.title(f"Prediction: :green[{predicted_label}]")
-                st.success("Prediction Success!", icon="✅")
+                st.toast("Prediction Success!", icon="✅")
 
 
     elif option == "Record audio":
         rec = st.audio_input("2 . Record a cough (กดครั้งแรกเพื่อเริ่มการบันทึก กดอีกครั้งเพื่อหยุด / Press first to start recording. Press again to stop.)")
-    
         if rec is not None:
             audio_data, sr = process_audio(rec.read())
-            st.audio(rec)
             with st.spinner("Analyzing audio..."):
                 time.sleep(1)
+            
                 predicted_label = predict_audio(model, audio_data, sr)
+            
                 if predicted_label == "covid":
                     st.title(f"Prediction: :red[{predicted_label}]")
                 else:
                     st.title(f"Prediction: :green[{predicted_label}]")
+                st.toast("Prediction Success!", icon="✅")
 
 if __name__ == "__main__":
     app()
