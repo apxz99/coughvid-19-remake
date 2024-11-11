@@ -9,7 +9,7 @@ import io
 import time
 #python.exe -m streamlit run app.py
 def load_model():
-    return tf.keras.models.load_model('best_model3.keras')
+    return tf.keras.models.load_model('best_model3.keras', compile=False)
 
 def process_audio(audio_bytes):
     audio, sr = librosa.load(io.BytesIO(audio_bytes), sr=None)
