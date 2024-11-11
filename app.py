@@ -41,7 +41,7 @@ def app():
     st.subheader("วิธีการใช้งาน ")
     st.text(
     """1. เลือกวิธีการอัพโหลดไฟล์เสียง / Choose a method to upload the audio file.
-        2. อัพโหลด/บันทึก "เสียงไอ" / Upload or Record a "Cough audio".'
+        2. อัพโหลด/บันทึก "เสียงไอ" / Upload or Record a "Cough audio".
         3. รอการประมวลผล / Receive the prediction result.
         """
         )
